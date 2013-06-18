@@ -40,8 +40,18 @@ define(["./kernel", "../on", "../has", "../dom-geometry"], function(dojo, on, ha
 			// evt: Event
 			//		The event object. If omitted, window.event is used on IE.
 			if(has("dom-addeventlistener") || (evt && evt.preventDefault)){
-				evt.preventDefault();
-				evt.stopPropagation();
+				if (evt.preventDefault) {
+					evt.preventDefault();
+				}
+				else {
+					evt.returnValue = false;
+				}
+				if (evt.stopPropagation) {
+					evt.stopPropagation();
+				}
+				else {
+					evt.cancelBubble = true;
+				}
 			}else{
 				evt = evt || window.event;
 				evt.cancelBubble = true;
